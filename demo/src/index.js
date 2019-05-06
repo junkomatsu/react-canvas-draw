@@ -10,7 +10,8 @@ class Demo extends Component {
     width: 400,
     height: 400,
     brushRadius: 10,
-    lazyRadius: 12
+    lazyRadius: 12,
+    eraserMode: false,
   };
   componentDidMount() {
     // let's change the color randomly every 2 seconds. fun!
@@ -143,11 +144,22 @@ class Demo extends Component {
               }
             />
           </div>
+          <div>
+            <label>Eraser:</label>
+            <input
+              type="checkbox"
+              checked={this.state.eraserMode}
+              onChange={e =>
+                this.setState({ eraserMode: e.target.checked})
+              }
+            />
+          </div>
         </div>
         <CanvasDraw
           ref={canvasDraw => (this.saveableCanvas = canvasDraw)}
           brushColor={this.state.color}
           brushRadius={this.state.brushRadius}
+          eraserMode={this.state.eraserMode}
           lazyRadius={this.state.lazyRadius}
           canvasWidth={this.state.width}
           canvasHeight={this.state.height}

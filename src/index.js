@@ -49,6 +49,7 @@ export default class extends PureComponent {
     lazyRadius: PropTypes.number,
     brushRadius: PropTypes.number,
     brushColor: PropTypes.string,
+    eraserMode: PropTypes.bool,
     catenaryColor: PropTypes.string,
     gridColor: PropTypes.string,
     backgroundColor: PropTypes.string,
@@ -66,6 +67,7 @@ export default class extends PureComponent {
     lazyRadius: 12,
     brushRadius: 10,
     brushColor: "#444",
+    eraserMode: false,
     catenaryColor: "#0a0302",
     gridColor: "rgba(150,150,150,0.17)",
     backgroundColor: "#FFF",
@@ -232,7 +234,7 @@ export default class extends PureComponent {
     let timeoutGap = immediate ? 0 : this.props.loadTimeOffset;
 
     lines.forEach(line => {
-      const { points, brushColor, brushRadius } = line;
+      const { points, brushColor, brushRadius, eraserMode } = line;
 
       for (let i = 1; i < points.length; i++) {
         curTime += timeoutGap;
@@ -240,7 +242,8 @@ export default class extends PureComponent {
           this.drawPoints({
             points: points.slice(0, i + 1),
             brushColor,
-            brushRadius
+            brushRadius,
+            eraserMode
           });
         }, curTime);
       }
@@ -358,14 +361,15 @@ export default class extends PureComponent {
       this.drawPoints({
         points: this.points,
         brushColor: this.props.brushColor,
-        brushRadius: this.props.brushRadius
+        brushRadius: this.props.brushRadius,
+        eraserMode: this.props.eraserMode
       });
     }
 
     this.mouseHasMoved = true;
   };
 
-  drawPoints = ({ points, brushColor, brushRadius }) => {
+  drawPoints = ({ points, brushColor, brushRadius, eraserMode }) => {
     this.ctx.temp.lineJoin = "round";
     this.ctx.temp.lineCap = "round";
     this.ctx.temp.strokeStyle = brushColor;
@@ -406,7 +410,8 @@ export default class extends PureComponent {
     this.lines.push({
       points: [...this.points],
       brushColor: brushColor || this.props.brushColor,
-      brushRadius: brushRadius || this.props.brushRadius
+      brushRadius: brushRadius || this.props.brushRadius,
+      eraserMode: this.props.eraserMode
     });
 
     // Reset points array
@@ -414,6 +419,12 @@ export default class extends PureComponent {
 
     const width = this.canvas.temp.width;
     const height = this.canvas.temp.height;
+
+    if (this.props.eraserMode) {
+      this.ctx.drawing.globalCompositeOperation = "destination-out";
+    } else {
+      this.ctx.drawing.globalCompositeOperation = 'source-over';
+    }
 
     // Copy the line to the drawing canvas
     this.ctx.drawing.drawImage(this.canvas.temp, 0, 0, width, height);
