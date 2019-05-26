@@ -12,6 +12,7 @@ class Demo extends Component {
     brushRadius: 10,
     lazyRadius: 12,
     eraserMode: false,
+    background: 'https://upload.wikimedia.org/wikipedia/commons/a/a1/Nepalese_Mhapuja_Mandala.jpg',
   };
   componentDidMount() {
     // let's change the color randomly every 2 seconds. fun!
@@ -68,8 +69,9 @@ class Demo extends Component {
         </p>
         <CanvasDraw
           brushColor="rgba(155,12,60,0.3)"
-          imgSrc="https://upload.wikimedia.org/wikipedia/commons/a/a1/Nepalese_Mhapuja_Mandala.jpg"
+          imgSrc={this.state.background}
         />
+        <input type="text" value={this.state.background} onChange={e => this.setState({ background: e.target.value })} />
         <h2>Save & Load</h2>
         <p>
           This part got me most excited. Very easy to use saving and loading of
