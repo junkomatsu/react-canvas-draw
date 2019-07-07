@@ -29,7 +29,7 @@ export default function drawImageProp({ctx, img, x, y, w, h, offsetX, offsetY} =
     cw,
     ch,
     ar = 1;
-
+  console.log('drawImage a', iw, ih, r, nw, nh, cx);
   // decide which gap to fill
   if (nw < w) ar = w / nw;
   if (Math.abs(ar - 1) < 1e-14 && nh < h) ar = h / nh; // updated
