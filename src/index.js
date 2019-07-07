@@ -164,6 +164,7 @@ export default class extends PureComponent {
   };
 
   drawImage = () => {
+    console.log('CanvasDraw: drawImage', this.props.imgSrc);
     if (!this.props.imgSrc) return;
 
     // Load the image
@@ -172,6 +173,7 @@ export default class extends PureComponent {
 
     // Draw the image once loaded
     this.image.onload = () =>
+      console.log('CanvasDraw: onload', this.image);
       drawImage({ ctx: this.ctx.grid, img: this.image });
   };
 
@@ -309,7 +311,11 @@ export default class extends PureComponent {
       this.setCanvasSize(this.canvas.temp, width, height);
       this.setCanvasSize(this.canvas.grid, width, height);
 
-      this.drawGrid(this.ctx.grid);
+      if (this.props.imgSrc) {
+        this.drawImage();
+      } else {
+        this.drawGrid(this.ctx.grid);
+      }
       this.loop({ once: true });
     }
     this.loadSaveData(saveData, true);
