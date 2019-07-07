@@ -173,7 +173,7 @@ export default class extends PureComponent {
 
     // Draw the image once loaded
     this.image.onload = () =>
-      console.log('CanvasDraw: onload', this.image);
+      console.log('CanvasDraw: onload', this.image, this.ctx.grid);
       drawImage({ ctx: this.ctx.grid, img: this.image });
   };
 
